@@ -32,3 +32,21 @@ export default class StudentsController {
       data: 'Deletado com sucesso',
     }
   }
+  //alterar dados aluno
+  public async update({ params, request }: HttpContextContract) {
+    const body = request.body()
+
+    const student = await Student.findOrFail(params.id)
+
+    student.name = body.name
+    student.email = body.email
+    student.birthDate = body.birthDate
+    student.registration = body.registration
+
+    student.save()
+
+    return {
+      data: 'Dados atualizados',
+    }
+  }
+}
