@@ -22,3 +22,13 @@ export default class StudentsController {
     }
   }
 
+  //deletar usuario
+  public async destroy({ params }: HttpContextContract) {
+    const student = await Student.findOrFail(params.id)
+
+    await student.delete()
+
+    return {
+      data: 'Deletado com sucesso',
+    }
+  }
