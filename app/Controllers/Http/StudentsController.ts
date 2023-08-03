@@ -10,11 +10,13 @@ export default class StudentsController {
       email: schema.string({}, [
         rules.email(),
         rules.unique({ table: 'students', column: 'email' }),
+        rules.required(),
       ]),
       registration: schema.string({}, [
         rules.unique({ table: 'students', column: 'registration' }),
+        rules.required(),
       ]),
-      birthDate: schema.string(),
+      birthDate: schema.string({}, [rules.required()]),
     })
 
     const playload = await request.validate({
@@ -35,7 +37,15 @@ export default class StudentsController {
       data: student,
     }
   }
-  //mostrar aluno por id
+  //mostrar todos alunos
+  public async index() {
+    const students = await Student.all()
+
+    return {
+      data: students,
+    }
+  }
+  //mostrar aluno por matricula
   public async show({ params }: HttpContextContract) {
     const student = await Student.findBy('registration', params.registration)
 
