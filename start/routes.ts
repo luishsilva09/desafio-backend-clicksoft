@@ -24,4 +24,4 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
-Route.resource('student', 'StudentsController').apiOnly()
+Route.resource('student', 'StudentsController').apiOnly().paramFor('student', 'registration')
