@@ -37,7 +37,7 @@ export default class StudentsController {
   }
   //mostrar aluno por id
   public async show({ params }: HttpContextContract) {
-    const student = await Student.findOrFail(params.id)
+    const student = await Student.findBy('registration', params.registration)
 
     return {
       data: student,
