@@ -55,20 +55,25 @@ export default class StudentsController {
     }
   }
   //alterar dados aluno
-  public async update({ params, request }: HttpContextContract) {
-    const body = request.body()
+  public async update({ params, request, response }: HttpContextContract) {
+    try {
+      const body = request.body()
 
-    const student = await Student.findOrFail(params.id)
+      const student = await Student.findByOrFail('registration', params.registration)
 
-    student.name = body.name
-    student.email = body.email
-    student.birthDate = body.birthDate
-    student.registration = body.registration
+      //verificar um meio de saber se é o proprio usuario
 
-    student.save()
+      student.name = body.name
+      student.email = body.email
+      student.birthDate = body.birthDate
 
-    return {
-      data: 'Dados atualizados',
+      student.save()
+
+      return {
+        data: 'Dados atualizados',
+      }
+    } catch (error) {
+      return response.status(401)
     }
   }
 }
