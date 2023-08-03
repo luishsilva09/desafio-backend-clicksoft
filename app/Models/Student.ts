@@ -12,7 +12,7 @@ export default class Student extends BaseModel {
   public email: string
 
   @column()
-  public registration: number
+  public registration: string
 
   @column()
   public birthDate: string
