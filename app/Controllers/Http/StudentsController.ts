@@ -45,13 +45,21 @@ export default class StudentsController {
   }
 
   //deletar usuario
-  public async destroy({ params }: HttpContextContract) {
-    const student = await Student.findOrFail(params.id)
+  public async destroy({ params, request, response }: HttpContextContract) {
+    try {
+      const student = await Student.findByOrFail('registration', params.registration)
+      const studentData = request.body()
 
-    await student.delete()
-
-    return {
-      data: 'Deletado com sucesso',
+      // verifica se os dados sao os mesmos que foi passado pelo aluno para permitir deletar
+      if (student.email === studentData.email && student.birthDate === studentData.birthDate) {
+        await student.delete()
+        return {
+          data: 'Deletado com sucesso',
+        }
+      }
+      return response.status(401).send('Verifique os dados')
+    } catch (error) {
+      return response.status(401).send('Verifique os dados')
     }
   }
   //alterar dados aluno
