@@ -26,4 +26,6 @@ Route.get('/', async () => {
 
 Route.resource('student', 'StudentsController').apiOnly().paramFor('student', 'registration')
 Route.resource('professor', 'ProfessorsController').apiOnly().paramFor('professor', 'registration')
-Route.resource('classroom', 'ClassroomsController').apiOnly()
+Route.resource('classroom', 'ClassroomsController').apiOnly().paramFor('classroom', 'roomNumber')
+
+Route.post('/classroom/newStudent/:roomNumber', 'ClassroomsController.newStudent')
