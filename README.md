@@ -72,6 +72,12 @@ Response:
     PATCH /student/:{registration}
 ```
 
+| Body        | Type     | Description                |
+| ----------- | -------- | -------------------------- |
+| `name`      | `String` | nome estudante             |
+| `email`     | `String` | email estudante            |
+| `birthDate` | `String` | data aniversario estudante |
+
 | Params         | Type     | Description                         |
 | -------------- | -------- | ----------------------------------- |
 | `registration` | `String` | **Required** matricula do estudante |
@@ -148,6 +154,12 @@ Response:
     PATCH /professor/:{registration}
 ```
 
+| Body        | Type     | Description                |
+| ----------- | -------- | -------------------------- |
+| `name`      | `String` | nome professor             |
+| `email`     | `String` | email professor            |
+| `birthDate` | `String` | data aniversario professor |
+
 | Params         | Type     | Description                         |
 | -------------- | -------- | ----------------------------------- |
 | `registration` | `String` | **Required** matricula do professor |
@@ -172,6 +184,86 @@ Request:
 | `registration` | `String` | **Required** matricula do professor |
 
 # Salas
+
+### Registro sala:
+
+```http
+    POST /classroom
+```
+
+Request:
+
+| Body                    | Type      | Description                                   |
+| ----------------------- | --------- | --------------------------------------------- |
+| `professorRegistration` | `String`  | **Required** matricula do professor           |
+| `roomNumber`            | `String`  | **Required** numero da sala                   |
+| `studentCapacity`       | `Number`  | **Required** capacidade de estudantes na sala |
+| `isAvailable`           | `Boolean` | **Required** se esta disponivel para alocar   |
+
+</br>
+
+### Editar dados sala:
+
+```http
+    PATCH /classroom/:{roomNumber}
+```
+
+| Body              | Type      | Description                      |
+| ----------------- | --------- | -------------------------------- |
+| `studentCapacity` | `Number`  | capacidade de estudantes na sala |
+| `isAvailable`     | `Boolean` | se esta disponivel para alocar   |
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+### Deletar sala
+
+```http
+    DELETE /classroom/:{roomNumber}
+```
+
+Request:
+
+| Body               | Type     | Description                      |
+| ------------------ | -------- | -------------------------------- |
+| `profRegistration` | `String` | **Required** matricula professor |
+
+`body = Usando para confirmar identidade do usuario`
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+### Buscar sala:
+
+```http
+    GET /classroom/:{registration}
+```
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+Response:
+
+```json
+{
+    {
+	"data": [
+		{
+			"id": 2,
+			"room_number": "33",
+			"student_capacity": "20",
+			"is_available": true,
+			"professor_id": 1,
+			"created_at": "2023-08-04T21:58:55.260Z",
+			"updated_at": "2023-08-04T21:58:55.260Z"
+		}
+	]
+}
+}
+```
 
 # Tests:
 
