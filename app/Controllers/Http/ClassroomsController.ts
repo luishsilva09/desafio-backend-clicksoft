@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Database from '@ioc:Adonis/Lucid/Database'
 import Classroom from 'App/Models/Classroom'
 import Professor from 'App/Models/Professor'
 
@@ -15,7 +16,7 @@ export default class ClassroomsController {
       studentCapacity: schema.number(),
       isAvailable: schema.boolean(),
     })
-    const playload = await request.validate({
+    await request.validate({
       schema: newClass,
     })
 
@@ -100,8 +101,9 @@ export default class ClassroomsController {
     }
   }
 
+  public async newStudent() {
     return {
-      data: students,
+      data: 'teste',
     }
   }
 }
