@@ -10,7 +10,6 @@ export default class extends BaseSchema {
       table.decimal('student_capacity', 8, 0).notNullable()
       table.boolean('is_available').notNullable()
 
-      table.integer('student_id').unsigned().references('students.id').onDelete('CASCADE')
       table.integer('professor_id').unsigned().references('professors.id').onDelete('CASCADE')
 
       /**
