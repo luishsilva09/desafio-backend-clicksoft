@@ -33,7 +33,7 @@ Request:
 | -------------- | -------- | --------------------------------------- |
 | `name`         | `String` | **Required** nome estudante             |
 | `email`        | `String` | **Required** email estudante            |
-| `registration` | `Number` | **Required** matricula estudante        |
+| `registration` | `String` | **Required** matricula estudante        |
 | `birthDate`    | `String` | **Required** data aniversario estudante |
 
 </br>
@@ -41,12 +41,12 @@ Request:
 ### Buscar estudante:
 
 ```http
-    GET /student/:{id}
+    GET /student/:{registration}
 ```
 
-| Params | Type     | Description                  |
-| ------ | -------- | ---------------------------- |
-| `id`   | `String` | **Required** id do estudante |
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do estudante |
 
 Response:
 
@@ -66,64 +66,112 @@ Response:
 }
 ```
 
-### Alterar dados estudante:
+### Editar dados estudante:
 
 ```http
-    PATCH /student/:{id}
+    PATCH /student/:{registration}
 ```
 
-| Params | Type     | Description                  |
-| ------ | -------- | ---------------------------- |
-| `id`   | `String` | **Required** id do estudante |
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do estudante |
 
 ### Deletar estudante
 
 ```http
-    DELETE /student/:{id}
+    DELETE /student/:{registration}
 ```
 
-| Params | Type     | Description                  |
-| ------ | -------- | ---------------------------- |
-| `id`   | `String` | **Required** id do estudante |
+Request:
+
+| Body        | Type     | Description                             |
+| ----------- | -------- | --------------------------------------- |
+| `email`     | `String` | **Required** email estudante            |
+| `birthDate` | `String` | **Required** data aniversario estudante |
+
+`body = Usando para confirmar identidade do usuario`
+
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do estudante |
 
 # Professor
 
-### Two factor authentication enable
+### Registro professor:
 
 ```http
-    POST /twoFactorAuth
+    POST /professor
 ```
 
-| Headers          | Type     | Description               |
-| ---------------- | -------- | ------------------------- |
-| `Authentication` | `Bearer` | **Required** bearer token |
+Request:
+
+| Body           | Type     | Description                             |
+| -------------- | -------- | --------------------------------------- |
+| `name`         | `String` | **Required** nome professor             |
+| `email`        | `String` | **Required** email professor            |
+| `registration` | `String` | **Required** matricula professor        |
+| `birthDate`    | `String` | **Required** data aniversario professor |
+
+</br>
+
+### Buscar professor:
+
+```http
+    GET /professor/:{registration}
+```
+
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do professor |
 
 Response:
 
-Return a object from Liberie Speakeasy.
-
 ```json
 {
-    ascii:""
-    base32:""
-    hex:""
-    otpauth_url:""
+    {
+	"data": {
+		"id": 3,
+		"name": "luis",
+		"email": "teste@teste.com",
+		"registration": "123456",
+		"birth_date": "21/12/2004",
+		"created_at": "2023-08-02T19:57:23.949-03:00",
+		"updated_at": "2023-08-02T19:57:23.949-03:00"
+	}
+}
 }
 ```
 
-### Two factor authentication verify
+### Editar dados professor:
 
 ```http
-    POST /twoFactorAuth/verify
+    PATCH /professor/:{registration}
 ```
 
-| Headers          | Type     | Description               |
-| ---------------- | -------- | ------------------------- |
-| `Authentication` | `Bearer` | **Required** bearer token |
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do professor |
 
-| Body    | Type     | Description            |
-| ------- | -------- | ---------------------- |
-| `token` | `String` | **Required** Pin/token |
+### Deletar professor
+
+```http
+    DELETE /professor/:{registration}
+```
+
+Request:
+
+| Body        | Type     | Description                             |
+| ----------- | -------- | --------------------------------------- |
+| `email`     | `String` | **Required** email professor            |
+| `birthDate` | `String` | **Required** data aniversario professor |
+
+`body = Usando para confirmar identidade do usuario`
+
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do professor |
+
+# Salas
 
 # Tests:
 
