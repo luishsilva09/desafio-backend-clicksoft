@@ -19,7 +19,7 @@ export default class ProfessorsController {
       birthDate: schema.string({}, [rules.required()]),
     })
 
-    const playload = await request.validate({
+    await request.validate({
       schema: newProfessor,
       messages: {
         required: 'Campo {{ field }} é obrigatorio',
@@ -33,13 +33,13 @@ export default class ProfessorsController {
 
     response.status(201)
     return {
-      message: 'Aluno criado com sucesso',
+      message: 'Professor criado com sucesso',
       data: professor,
     }
   }
   //mostrar professor por matricula
   public async show({ params }: HttpContextContract) {
-    const student = await Professor.query().preload('classroom')
+    const student = await Professor.query().where('registration', params.registration)
 
     return {
       data: student,
@@ -47,45 +47,37 @@ export default class ProfessorsController {
   }
   //deletar usuario
   public async destroy({ params, request, response }: HttpContextContract) {
-    try {
-      const professor = await Professor.findByOrFail('registration', params.registration)
-      const professorData = request.body()
+    const professor = await Professor.findByOrFail('registration', params.registration)
+    const professorData = request.body()
 
-      // verifica se os dados sao os mesmos que foi passado pelo aluno para permitir deletar
-      if (
-        professor.email === professorData.email &&
-        professor.birthDate === professorData.birthDate
-      ) {
-        await professor.delete()
-        return {
-          data: 'Deletado com sucesso',
-        }
+    // verifica se os dados sao os mesmos que foi passado pelo aluno para permitir deletar
+    if (
+      professor.email === professorData.email &&
+      professor.birthDate === professorData.birthDate
+    ) {
+      await professor.delete()
+      return {
+        data: 'Deletado com sucesso',
       }
-      return response.status(401).send('Verifique os dados')
-    } catch (error) {
-      return response.status(401).send('Verifique os dados')
     }
+    return response.status(401).send('Verifique os dados')
   }
   //alterar dados professor
-  public async update({ params, request, response }: HttpContextContract) {
-    try {
-      const body = request.body()
+  public async update({ params, request }: HttpContextContract) {
+    const body = request.body()
 
-      const professor = await Professor.findByOrFail('registration', params.registration)
+    const professor = await Professor.findByOrFail('registration', params.registration)
 
-      //verificar um meio de saber se é o proprio usuario
+    //verificar um meio de saber se é o proprio usuario
 
-      professor.name = body.name
-      professor.email = body.email
-      professor.birthDate = body.birthDate
+    professor.name = body.name
+    professor.email = body.email
+    professor.birthDate = body.birthDate
 
-      professor.save()
+    professor.save()
 
-      return {
-        data: 'Dados atualizados',
-      }
-    } catch (error) {
-      return response.status(401)
+    return {
+      data: 'Dados atualizados',
     }
   }
 }
