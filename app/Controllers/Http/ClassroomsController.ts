@@ -59,6 +59,33 @@ export default class ClassroomsController {
       data: 'Verificar dados',
     }
   }
+  //atualizar dados
+  public async update({ params, request }: HttpContextContract) {
+    const body = request.body()
+
+    //busca dados da sala
+    const classroom = await Classroom.findByOrFail('roomNumber', params.roomNumber)
+
+    //busca dado professor
+    const profData = await Professor.findByOrFail('registration', body.profRegistration)
+
+    //verificar se o professor foi quem criou a sala
+    if (profData.id !== classroom.professorId) {
+      return {
+        data: 'verifique os dados',
+      }
+    }
+
+    //faz a atualização dos dados
+    classroom.studentCapacity = body.studentCapacity
+    classroom.isAvailable = body.isAvailable
+
+    classroom.save()
+
+    return {
+      data: 'Dados atualizados',
+    }
+  }
 
     return {
       data: students,
