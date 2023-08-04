@@ -86,6 +86,19 @@ export default class ClassroomsController {
       data: 'Dados atualizados',
     }
   }
+  public async show({ params, request }: HttpContextContract) {
+    const roomNumber = params.roomNumber
+    // const body = request.body()
+    // console.log(body)
+
+    // await Professor.findByOrFail('registration', body.profResgistration)
+
+    const classroom = await Database.from('classrooms').where('room_number', roomNumber)
+
+    return {
+      data: classroom,
+    }
+  }
 
     return {
       data: students,
