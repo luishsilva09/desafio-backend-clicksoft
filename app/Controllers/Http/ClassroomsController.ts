@@ -38,8 +38,27 @@ export default class ClassroomsController {
     }
   }
 
-  public async index() {
-    const students = await Classroom.query()
+  //deletar sala
+  public async destroy({ params, request }: HttpContextContract) {
+    const roomNumber = params.roomNumber
+    const body = request.body()
+
+    //busca dado professor
+    const profData = await Professor.findByOrFail('registration', body.profRegistration)
+    //buscar dados sala
+    const roomData = await Classroom.findByOrFail('roomNumber', roomNumber)
+
+    //verificar se o professor foi quem criou a sala
+    if (profData.id === roomData.professorId) {
+      await roomData.delete()
+      return {
+        data: 'Deletado com sucesso',
+      }
+    }
+    return {
+      data: 'Verificar dados',
+    }
+  }
 
     return {
       data: students,
