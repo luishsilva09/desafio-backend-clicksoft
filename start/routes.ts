@@ -30,3 +30,4 @@ Route.resource('classroom', 'ClassroomsController').apiOnly().paramFor('classroo
 
 Route.post('/classroom/addStudent/:roomNumber', 'ClassroomsController.addStudent')
 Route.post('/classroom/removeStudent/:roomNumber', 'ClassroomsController.removeStudent')
+Route.post('/classroom/allStudent/:roomNumber', 'ClassroomsController.allStudentClass')
