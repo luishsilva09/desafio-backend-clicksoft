@@ -17,7 +17,7 @@ export default class Student extends BaseModel {
   @column()
   public birthDate: string
 
-  @manyToMany(() => Classroom, { pivotTable: 'class_student' })
+  @manyToMany(() => Classroom, { pivotTable: 'class_students' })
   public classrooms: ManyToMany<typeof Classroom>
 
   @column.dateTime({ autoCreate: true })
