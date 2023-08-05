@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('room_number').notNullable().unique()
-      table.decimal('student_capacity', 8, 0).notNullable()
+      table.integer('student_capacity').notNullable()
       table.boolean('is_available').notNullable()
 
       table.integer('professor_id').unsigned().references('professors.id').onDelete('CASCADE')
