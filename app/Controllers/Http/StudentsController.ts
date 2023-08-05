@@ -94,7 +94,7 @@ export default class StudentsController {
       })
       .where('students.id', student.id)
     return {
-      data: 'teste',
+      data: 'lista de salas',
       nomeAluno: student.name,
       classList,
     }
