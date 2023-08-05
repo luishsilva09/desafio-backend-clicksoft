@@ -3,6 +3,8 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database'
 import Classroom from 'App/Models/Classroom'
 import Professor from 'App/Models/Professor'
+import Student from 'App/Models/Student'
+import ClassStudent from 'App/Models/ClassStudent'
 
 export default class ClassroomsController {
   public async store({ request, response }: HttpContextContract) {
@@ -101,9 +103,57 @@ export default class ClassroomsController {
     }
   }
 
-  public async newStudent() {
+  public async addStudent({ params, request, response }: HttpContextContract) {
+    const roomNumber = params.roomNumber
+    const body = request.body()
+    const validRequest = schema.create({
+      professorRegistration: schema.string({}, [
+        rules.exists({ table: 'professors', column: 'registration' }),
+        rules.alphaNum(),
+      ]),
+      studentRegistration: schema.string({}, [
+        rules.exists({ table: 'students', column: 'registration' }),
+      ]),
+    })
+    await request.validate({
+      schema: validRequest,
+    })
+
+    const roomData = await Classroom.findByOrFail('roomNumber', roomNumber)
+    const profData = await Professor.findByOrFail('registration', body.professorRegistration)
+    const studentData = await Student.findByOrFail('registration', body.studentRegistration)
+
+    //validar apenas para professor que criou a sala
+    if (roomData.professorId !== profData.id) {
+      return response.status(401).send('Verifique os dados')
+    }
+    //verificar se  aluno já está na sala
+    const existOnClass = await ClassStudent.query()
+      .where('student_id', studentData.id)
+      .andWhere('classroom_id', roomData.id)
+
+    if (existOnClass.length !== 0) {
+      return response.status(401).send({
+        data: 'ja esta na sala',
+        existOnClass,
+      })
+    }
+    // verifica a capacidade da sala
+    if (roomData.studentCapacity === 0 || !roomData.isAvailable) {
+      return {
+        data: 'Sala está cheia',
+      }
+    }
+    //adiciona o dado na tabela intermediaria
+    await ClassStudent.create({
+      studentId: studentData.id,
+      classroomId: roomData.id,
+    })
+    // decrementa a capacidade da sala quando um aluno é adicionado
+    await Classroom.query().where('id', roomData.id).decrement('studentCapacity', 1)
+
     return {
-      data: 'teste',
+      data: 'Aluno adicionado',
     }
   }
 }
