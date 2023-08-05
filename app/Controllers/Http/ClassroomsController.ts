@@ -204,4 +204,27 @@ export default class ClassroomsController {
       existOnClass,
     })
   }
+
+  public async allStudentClass({ params, request, response }: HttpContextContract) {
+    const roomNumber = params.roomNumber
+    const body = request.body()
+
+    const profData = await Professor.findByOrFail('registration', body.professorRegistration)
+
+    const roomData = await Classroom.query().where('roomNumber', roomNumber)
+    //validar apenas para professor que criou a sala
+    if (roomData[0].professorId !== profData.id) {
+      return response.status(401).send('Verifique os dados')
+    }
+    const studentsList = await Student.query()
+      .join('class_students', 'students.id', 'class_students.student_id')
+      .where('class_students.classroom_id', roomData[0].id)
+      .select('name', 'registration', 'email')
+
+    return {
+      data: 'Lista de alunos',
+
+      studentsList,
+    }
+  }
 }
