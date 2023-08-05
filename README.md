@@ -101,6 +101,33 @@ Request:
 | -------------- | -------- | ----------------------------------- |
 | `registration` | `String` | **Required** matricula do estudante |
 
+### Listar salas a comparecer
+
+```http
+    GET /student/listClass/:{registration}
+```
+
+| Params         | Type     | Description                         |
+| -------------- | -------- | ----------------------------------- |
+| `registration` | `String` | **Required** matricula do estudante |
+
+Response:
+
+```json
+{
+  {
+	"data": "lista de salas",
+	"nomeAluno": "luis",
+	"classList": [
+		{
+			"Profesor": "luis",
+			"Sala": "1"
+		}
+	]
+}
+}
+```
+
 # Professor
 
 ### Registro professor:
@@ -238,8 +265,12 @@ Request:
 ### Buscar sala:
 
 ```http
-    GET /classroom/:{registration}
+    GET /classroom/:{roomNumber}
 ```
+
+| Body               | Type     | Description                      |
+| ------------------ | -------- | -------------------------------- |
+| `profRegistration` | `String` | **Required** matricula professor |
 
 | Params       | Type     | Description                 |
 | ------------ | -------- | --------------------------- |
@@ -262,6 +293,75 @@ Response:
 		}
 	]
 }
+}
+```
+
+### Alocar aluno na sala
+
+```http
+    GET /classroom/addStudent/:{roomNumber}
+```
+
+| Body                  | Type     | Description                      |
+| --------------------- | -------- | -------------------------------- |
+| `profRegistration`    | `String` | **Required** matricula professor |
+| `studentRegistration` | `String` | **Required** matricula do aluno  |
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+### Remover aluno da sala
+
+```http
+    GET /classroom/removeStudent/:{roomNumber}
+```
+
+| Body                  | Type     | Description                      |
+| --------------------- | -------- | -------------------------------- |
+| `profRegistration`    | `String` | **Required** matricula professor |
+| `studentRegistration` | `String` | **Required** matricula do aluno  |
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+### Listar alunos na sala
+
+```http
+    GET /classroom/allStudents/:{roomNumber}
+```
+
+| Body               | Type     | Description                      |
+| ------------------ | -------- | -------------------------------- |
+| `profRegistration` | `String` | **Required** matricula professor |
+
+| Params       | Type     | Description                 |
+| ------------ | -------- | --------------------------- |
+| `roomNumber` | `String` | **Required** numero da sala |
+
+Response:
+
+```json
+{
+  "data": "Lista de alunos",
+  "studentsList": [
+    {
+      "name": "luis",
+      "registration": "1",
+      "email": "luiss@teste.com"
+    },
+    {
+      "name": "luis",
+      "registration": "12",
+      "email": "luis@teste.com"
+    },
+    {
+      "name": "luis henrique",
+      "registration": "123",
+      "email": "luis@teste.com.br"
+    }
+  ]
 }
 ```
 
