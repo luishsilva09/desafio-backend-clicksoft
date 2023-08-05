@@ -156,4 +156,52 @@ export default class ClassroomsController {
       data: 'Aluno adicionado',
     }
   }
+
+  public async removeStudent({ params, request, response }: HttpContextContract) {
+    const roomNumber = params.roomNumber
+    const body = request.body()
+    const validRequest = schema.create({
+      professorRegistration: schema.string({}, [
+        rules.exists({ table: 'professors', column: 'registration' }),
+        rules.alphaNum(),
+      ]),
+      studentRegistration: schema.string({}, [
+        rules.exists({ table: 'students', column: 'registration' }),
+      ]),
+    })
+    await request.validate({
+      schema: validRequest,
+    })
+    const roomData = await Classroom.findByOrFail('roomNumber', roomNumber)
+    const profData = await Professor.findByOrFail('registration', body.professorRegistration)
+    const studentData = await Student.findByOrFail('registration', body.studentRegistration)
+
+    //validar apenas para professor que criou a sala
+    if (roomData.professorId !== profData.id) {
+      return response.status(401).send('Verifique os dados')
+    }
+    //verificar se  aluno está na sala e deletando
+    const existOnClass = await ClassStudent.query()
+      .where('student_id', studentData.id)
+      .andWhere('classroom_id', roomData.id)
+
+    if (existOnClass.length === 0) {
+      return response.status(401).send({
+        data: 'Aluno não está na sala',
+        existOnClass,
+      })
+    } else {
+      const data = await ClassStudent.find(existOnClass[0].id)
+      if (data) {
+        data.delete()
+      }
+    }
+
+    // incrementa a capacidade da sala quando um aluno é adicionado
+    await Classroom.query().where('id', roomData.id).increment('studentCapacity', 1)
+    return response.status(200).send({
+      data: 'Removido',
+      existOnClass,
+    })
+  }
 }
