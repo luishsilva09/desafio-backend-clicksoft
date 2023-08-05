@@ -28,4 +28,5 @@ Route.resource('student', 'StudentsController').apiOnly().paramFor('student', 'r
 Route.resource('professor', 'ProfessorsController').apiOnly().paramFor('professor', 'registration')
 Route.resource('classroom', 'ClassroomsController').apiOnly().paramFor('classroom', 'roomNumber')
 
-Route.post('/classroom/newStudent/:roomNumber', 'ClassroomsController.newStudent')
+Route.post('/classroom/addStudent/:roomNumber', 'ClassroomsController.addStudent')
+Route.post('/classroom/removeStudent/:roomNumber', 'ClassroomsController.removeStudent')
