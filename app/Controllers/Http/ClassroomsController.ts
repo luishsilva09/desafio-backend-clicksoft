@@ -89,7 +89,7 @@ export default class ClassroomsController {
       data: 'Dados atualizados',
     }
   }
-  public async show({ params, request }: HttpContextContract) {
+  public async show({ params }: HttpContextContract) {
     const roomNumber = params.roomNumber
     // const body = request.body()
     // console.log(body)
