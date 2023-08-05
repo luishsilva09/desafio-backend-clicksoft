@@ -20,10 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
-
 Route.resource('student', 'StudentsController').apiOnly().paramFor('student', 'registration')
 Route.resource('professor', 'ProfessorsController').apiOnly().paramFor('professor', 'registration')
 Route.resource('classroom', 'ClassroomsController').apiOnly().paramFor('classroom', 'roomNumber')

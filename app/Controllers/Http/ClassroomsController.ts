@@ -91,10 +91,6 @@ export default class ClassroomsController {
   }
   public async show({ params }: HttpContextContract) {
     const roomNumber = params.roomNumber
-    // const body = request.body()
-    // console.log(body)
-
-    // await Professor.findByOrFail('registration', body.profResgistration)
 
     const classroom = await Database.from('classrooms').where('room_number', roomNumber)
 
