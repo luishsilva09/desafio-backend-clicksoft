@@ -1,5 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Student from 'App/Models/Student'
+import Database from '@ioc:Adonis/Lucid/Database'
+
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class StudentsController {
@@ -76,6 +78,25 @@ export default class StudentsController {
 
     return {
       data: 'Dados atualizados',
+    }
+  }
+
+  //listar salas do aluno
+  public async listClass({ params }: HttpContextContract) {
+    const student = await Student.findByOrFail('registration', params.registration)
+    const classList = await Database.from('students')
+      .join('class_students', 'students.id', 'class_students.student_id')
+      .join('classrooms', 'class_students.classroom_id', 'classrooms.id')
+      .join('professors', 'classrooms.professor_id', 'professors.id')
+      .select({
+        Profesor: 'professors.name',
+        Sala: 'classrooms.room_number',
+      })
+      .where('students.id', student.id)
+    return {
+      data: 'teste',
+      nomeAluno: student.name,
+      classList,
     }
   }
 }
