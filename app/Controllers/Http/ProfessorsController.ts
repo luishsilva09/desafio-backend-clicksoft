@@ -3,6 +3,7 @@ import Professor from 'App/Models/Professor'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class ProfessorsController {
+  //criar novo professor
   public async store({ request, response }: HttpContextContract) {
     //validar dados
     const newProfessor = schema.create({
@@ -39,18 +40,18 @@ export default class ProfessorsController {
   }
   //mostrar professor por matricula
   public async show({ params }: HttpContextContract) {
-    const student = await Professor.query().where('registration', params.registration)
+    const professor = await Professor.query().where('registration', params.registration)
 
     return {
-      data: student,
+      data: professor,
     }
   }
-  //deletar usuario
+  //deletar professor
   public async destroy({ params, request, response }: HttpContextContract) {
     const professor = await Professor.findByOrFail('registration', params.registration)
     const professorData = request.body()
 
-    // verifica se os dados sao os mesmos que foi passado pelo aluno para permitir deletar
+    // verifica se os dados sao os mesmos que foi passado pelo professor para permitir deletar
     if (
       professor.email === professorData.email &&
       professor.birthDate === professorData.birthDate
@@ -67,8 +68,6 @@ export default class ProfessorsController {
     const body = request.body()
 
     const professor = await Professor.findByOrFail('registration', params.registration)
-
-    //verificar um meio de saber se é o proprio usuario
 
     professor.name = body.name
     professor.email = body.email
