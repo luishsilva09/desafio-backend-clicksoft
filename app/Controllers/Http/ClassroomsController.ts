@@ -127,7 +127,6 @@ export default class ClassroomsController {
     if (existOnClass.length !== 0) {
       return response.status(401).send({
         data: 'ja esta na sala',
-        existOnClass,
       })
     }
     // verifica a capacidade da sala
@@ -180,7 +179,6 @@ export default class ClassroomsController {
     if (existOnClass.length === 0) {
       return response.status(401).send({
         data: 'Aluno não está na sala',
-        existOnClass,
       })
     } else {
       const data = await ClassStudent.find(existOnClass[0].id)
