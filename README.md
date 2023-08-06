@@ -299,7 +299,7 @@ Response:
 ### Alocar aluno na sala
 
 ```http
-    GET /classroom/addStudent/:{roomNumber}
+    POST /classroom/addStudent/:{roomNumber}
 ```
 
 | Body                  | Type     | Description                      |
@@ -314,7 +314,7 @@ Response:
 ### Remover aluno da sala
 
 ```http
-    GET /classroom/removeStudent/:{roomNumber}
+   POST /classroom/removeStudent/:{roomNumber}
 ```
 
 | Body                  | Type     | Description                      |
@@ -329,7 +329,7 @@ Response:
 ### Listar alunos na sala
 
 ```http
-    GET /classroom/allStudents/:{roomNumber}
+    POST /classroom/allStudents/:{roomNumber}
 ```
 
 | Body               | Type     | Description                      |
