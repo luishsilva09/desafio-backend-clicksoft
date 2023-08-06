@@ -5,6 +5,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class StudentsController {
+  //Criar novo aluno
   public async store({ request, response }: HttpContextContract) {
     //validar dados
     const newStudent = schema.create({
@@ -63,19 +64,17 @@ export default class StudentsController {
     return response.status(401).send('Verifique os dados')
   }
   //alterar dados aluno
-  public async update({ params, request }: HttpContextContract) {
+  public async update({ params, request, response }: HttpContextContract) {
     const body = request.body()
 
     const student = await Student.findByOrFail('registration', params.registration)
-
-    //verificar um meio de saber se é o proprio usuario
 
     student.name = body.name
     student.email = body.email
     student.birthDate = body.birthDate
 
     student.save()
-
+    response.status(200)
     return {
       data: 'Dados atualizados',
     }
@@ -83,7 +82,10 @@ export default class StudentsController {
 
   //listar salas do aluno
   public async listClass({ params }: HttpContextContract) {
+    //buscar por aluno
     const student = await Student.findByOrFail('registration', params.registration)
+
+    //Buscar e listar as salas que sao necessaria comparecer
     const classList = await Database.from('students')
       .join('class_students', 'students.id', 'class_students.student_id')
       .join('classrooms', 'class_students.classroom_id', 'classrooms.id')
@@ -94,7 +96,6 @@ export default class StudentsController {
       })
       .where('students.id', student.id)
     return {
-      data: 'lista de salas',
       nomeAluno: student.name,
       classList,
     }
