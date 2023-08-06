@@ -367,17 +367,7 @@ Response:
 
 # Tests:
 
-Use .env.test to dont have any problem on database.
-
-`DATABASE_URL = postgres://UserName:Password@Hostname:5432/DatabaseName-teste`
-
-`PORT = number #recommended:4000`
-
-To run tests:
-
-```bash
-    npm run test
-```
+Ainda em construção...
 
 # Run locally
 
